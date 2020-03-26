@@ -7,9 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:river_surf_report_client/reports.dart';
 
 class RecentReportsState extends State<RecentReports> {
-  var _reports;
   Future<Reports> futureReports;
-  final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
   void initState() {
@@ -17,19 +15,15 @@ class RecentReportsState extends State<RecentReports> {
     futureReports = fetchReports();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-//    _reports.addAll(generateWordPairs().take(10));
-    _reports = fetchReports();
     return Scaffold(
       appBar: AppBar(
         title: Text('River Surf Report'),
       ),
       body: Center(
         child: FutureBuilder<Reports> (
-          future: _reports,
+          future: futureReports,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return _buildReports(snapshot.data);
@@ -37,7 +31,6 @@ class RecentReportsState extends State<RecentReports> {
               return Text("${snapshot.error}");
             }
 
-            // By default, show a loading spinner.
             return CircularProgressIndicator();
           }
         )
@@ -52,11 +45,11 @@ class RecentReportsState extends State<RecentReports> {
     return ListView.builder(
         itemCount: reports.length,
         itemBuilder: (context, i) {
-          return _buildRow(reports[i], width);
+          return _buildReport(reports[i], width);
         });
   }
 
-  Widget _buildRow(Report report, var width) {
+  Widget _buildReport(Report report, var width) {
     return Row(
         children: <Widget>[
           Image.network(
@@ -74,8 +67,6 @@ class RecentReportsState extends State<RecentReports> {
     if (response.statusCode == 200) {
       return Reports.fromJson(json.decode(response.body));
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to load reports');
     }
   }
