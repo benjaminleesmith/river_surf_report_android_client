@@ -8,6 +8,7 @@ import 'package:river_surf_report_client/reports.dart';
 
 class RecentReportsState extends State<RecentReports> {
   Future<Reports> futureReports;
+  TextStyle reportTitleStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 15);
 
   @override
   void initState() {
@@ -18,24 +19,21 @@ class RecentReportsState extends State<RecentReports> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('River Surf Report'),
-      ),
-      body: Center(
-        child: FutureBuilder<Reports> (
-          future: futureReports,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _buildReports(snapshot.data);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
+        appBar: AppBar(
+          title: Text('River Surf Report'),
+        ),
+        body: Center(
+            child: FutureBuilder<Reports>(
+                future: futureReports,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return _buildReports(snapshot.data);
+                  } else if (snapshot.hasError) {
+                    return Text("${snapshot.error}");
+                  }
 
-            return CircularProgressIndicator();
-          }
-        )
-      )
-    );
+                  return CircularProgressIndicator();
+                })));
   }
 
   Widget _buildReports(reportsFuture) {
@@ -50,19 +48,24 @@ class RecentReportsState extends State<RecentReports> {
   }
 
   Widget _buildReport(Report report, var width) {
-    return Row(
-        children: <Widget>[
-          Image.network(
-            report.imageUrl,
-            fit: BoxFit.fitWidth,
-            width: width,
-          )
-        ],
+    return Column(
+      children: <Widget>[
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[Text(report.wave.name, style: reportTitleStyle), Text(report.flow, style: reportTitleStyle)]),
+        Image.network(
+          report.imageUrl,
+          fit: BoxFit.fitWidth,
+          width: width,
+        )
+      ],
     );
   }
 
   Future<Reports> fetchReports() async {
-    final response = await http.get('http://riversurfreport.herokuapp.com/api/reports');
+    final response =
+        await http.get('http://riversurfreport.herokuapp.com/api/reports');
 
     if (response.statusCode == 200) {
       return Reports.fromJson(json.decode(response.body));
