@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:river_surf_report_client/report.dart';
 import 'package:http/http.dart' as http;
 import 'package:river_surf_report_client/reports.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RecentReportsState extends State<RecentReports> {
   Future<Reports> futureReports;
-  TextStyle reportTitleStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 15);
+  static Color greenTextColor = const Color.fromRGBO(0, 255, 41, 1.0);
+  TextStyle waveNameStyle = GoogleFonts.vT323(fontSize: 20, height: 2, decoration: TextDecoration.underline, color: greenTextColor);
+  TextStyle flowStyle = GoogleFonts.vT323(fontSize: 20, height: 2, color: greenTextColor);
 
   @override
   void initState() {
@@ -50,14 +53,19 @@ class RecentReportsState extends State<RecentReports> {
   Widget _buildReport(Report report, var width) {
     return Column(
       children: <Widget>[
+        Container(
+          color: Colors.black,
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Text(report.wave.name, style: waveNameStyle),
+                Text(report.flow, style: flowStyle)
+              ])
+        ),
+        Image.network(report.imageUrl, fit: BoxFit.fitWidth, width: width),
         Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[Text(report.wave.name, style: reportTitleStyle), Text(report.flow, style: reportTitleStyle)]),
-        Image.network(
-          report.imageUrl,
-          fit: BoxFit.fitWidth,
-          width: width,
+
         )
       ],
     );
