@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'recent_reports.dart';
+import 'routes/recent_reports.dart';
 
 void main() => runApp(MyApp());
 

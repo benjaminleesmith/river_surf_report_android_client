@@ -1,4 +1,5 @@
-import 'package:river_surf_report_client/wave.dart';
+
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/wave.dart';
 
 class Report {
   Wave wave;

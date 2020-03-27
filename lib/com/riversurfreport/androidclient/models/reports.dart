@@ -1,4 +1,4 @@
-import 'package:river_surf_report_client/report.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/report.dart';
 
 class Reports {
   List<Report> reports;

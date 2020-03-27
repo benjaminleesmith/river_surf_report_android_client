@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:river_surf_report_client/report.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/report.dart';
 import 'package:http/http.dart' as http;
-import 'package:river_surf_report_client/reports.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/reports.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RecentReportsState extends State<RecentReports> {
