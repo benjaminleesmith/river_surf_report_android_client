@@ -6,12 +6,17 @@ import 'package:river_surf_report_client/com/riversurfreport/androidclient/model
 import 'package:http/http.dart' as http;
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/reports.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/routes/wave_route.dart';
 
-class RecentReportsState extends State<RecentReports> {
+class RecentReportsRouteState extends State<RecentReportsRoute> {
   Future<Reports> futureReports;
   static Color greenTextColor = const Color.fromRGBO(0, 255, 41, 1.0);
-  TextStyle waveNameStyle = GoogleFonts.vT323(fontSize: 20, height: 2, decoration: TextDecoration.underline, color: greenTextColor);
-  TextStyle flowStyle = GoogleFonts.vT323(fontSize: 20, height: 2, color: greenTextColor);
+  TextStyle waveNameStyle = GoogleFonts.vT323(fontSize: 20,
+      height: 2,
+      decoration: TextDecoration.underline,
+      color: greenTextColor);
+  TextStyle flowStyle = GoogleFonts.vT323(
+      fontSize: 20, height: 2, color: greenTextColor);
 
   @override
   void initState() {
@@ -40,7 +45,10 @@ class RecentReportsState extends State<RecentReports> {
   }
 
   Widget _buildReports(reportsFuture) {
-    var width = MediaQuery.of(context).size.width;
+    var width = MediaQuery
+        .of(context)
+        .size
+        .width;
     var reports = reportsFuture.reports;
     print(reports);
     return ListView.builder(
@@ -54,14 +62,21 @@ class RecentReportsState extends State<RecentReports> {
     return Column(
       children: <Widget>[
         Container(
-          color: Colors.black,
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Text(report.wave.name, style: waveNameStyle),
-                Text(report.flow, style: flowStyle)
-              ])
+            color: Colors.black,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  new GestureDetector(onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => WaveRoute(report.wave))
+                    );
+                  },
+                      child: Text(report.wave.name, style: waveNameStyle)
+                  ),
+                  Text(report.flow, style: flowStyle)
+                ])
         ),
         Image.network(report.imageUrl, fit: BoxFit.fitWidth, width: width),
         Row(
@@ -73,7 +88,7 @@ class RecentReportsState extends State<RecentReports> {
 
   Future<Reports> fetchReports() async {
     final response =
-        await http.get('http://riversurfreport.herokuapp.com/api/reports');
+    await http.get('http://riversurfreport.herokuapp.com/api/reports');
 
     if (response.statusCode == 200) {
       return Reports.fromJson(json.decode(response.body));
@@ -83,7 +98,7 @@ class RecentReportsState extends State<RecentReports> {
   }
 }
 
-class RecentReports extends StatefulWidget {
+class RecentReportsRoute extends StatefulWidget {
   @override
-  RecentReportsState createState() => RecentReportsState();
+  RecentReportsRouteState createState() => RecentReportsRouteState();
 }
