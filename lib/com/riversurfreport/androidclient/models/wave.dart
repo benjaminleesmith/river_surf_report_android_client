@@ -6,8 +6,8 @@ class Wave {
 
   factory Wave.fromJson(Map<String, dynamic> json) {
     return Wave(
-      name: json['name'],
-      url: json['url']
+        name: json['name'],
+        url: json['url']
     );
   }
 }
