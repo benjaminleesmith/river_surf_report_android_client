@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/reports.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/routes/wave_route.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/progress_with_text.dart';
 
 class RecentReportsRouteState extends State<RecentReportsRoute> {
   String endpointsUrl;
@@ -52,14 +53,14 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                           return Text("${snapshot.error}");
                         }
 
-                        return CircularProgressIndicator();
+                        return ProgressWithText("fetching recent reports");
                       }
                     );
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
 
-                  return CircularProgressIndicator();
+                  return ProgressWithText("connecting to server");
                 })));
   }
 
