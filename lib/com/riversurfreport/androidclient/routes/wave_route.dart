@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/wave.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/wave_link.dart';
 
 class WaveRouteState extends State<WaveRoute> {
-  Wave wave;
+  WaveLink wave;
 
-  WaveRouteState(Wave wave) {
+  WaveRouteState(WaveLink wave) {
     this.wave = wave;
   }
 
@@ -21,8 +21,8 @@ class WaveRouteState extends State<WaveRoute> {
 }
 
 class WaveRoute extends StatefulWidget {
-  Wave wave;
-  WaveRoute(Wave wave) {
+  WaveLink wave;
+  WaveRoute(WaveLink wave) {
     this.wave = wave;
   }
 

@@ -1,8 +1,8 @@
 
-import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/wave.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/wave_link.dart';
 
 class Report {
-  Wave wave;
+  WaveLink wave;
   DateTime date;
   String flow = "666 CFS";
   String imageUrl =
@@ -28,7 +28,7 @@ class Report {
 
   factory Report.fromJson(Map<String, dynamic> json) {
     return Report(
-        wave: Wave.fromJson(json['wave']),
+        wave: WaveLink.fromJson(json['wave']),
         date: DateTime.parse(json['date']),
         flow: json['flow'],
         imageUrl: json['imageUrl'],
