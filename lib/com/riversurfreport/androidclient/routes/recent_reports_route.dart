@@ -1,14 +1,13 @@
 import 'dart:convert';
 
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/endpoints.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/report.dart';
 import 'package:http/http.dart' as http;
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/reports.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:river_surf_report_client/com/riversurfreport/androidclient/routes/wave_route.dart';
-import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/progress_with_text.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/progress_with_text_widget.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/report_widget.dart';
 
 class RecentReportsRouteState extends State<RecentReportsRoute> {
   String endpointsUrl;
@@ -53,14 +52,14 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                           return Text("${snapshot.error}");
                         }
 
-                        return ProgressWithText("fetching recent reports");
+                        return ProgressWithTextWidget(text: "fetching recent reports");
                       }
                     );
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
 
-                  return ProgressWithText("connecting to server");
+                  return ProgressWithTextWidget(text: "connecting to server");
                 })));
   }
 
@@ -79,31 +78,7 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
   }
 
   Widget _buildReport(Report report, var width) {
-    return Column(
-      children: <Widget>[
-        Container(
-            color: Colors.black,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  new GestureDetector(onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => WaveRoute(report.wave))
-                    );
-                  },
-                      child: Text(report.wave.name, style: waveNameStyle)
-                  ),
-                  Text(report.flow, style: flowStyle)
-                ])
-        ),
-        Image.network(report.imageUrl, fit: BoxFit.fitWidth, width: width),
-        Row(
-
-        )
-      ],
-    );
+    return ReportWidget(report: report, context: context, waveNameStyle: waveNameStyle, flowStyle: flowStyle, width: width);
   }
 
   Future<Reports> fetchReports(String recentReportsUrl) async {

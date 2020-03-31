@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ProgressWithText extends StatelessWidget {
-  String text;
+class ProgressWithTextWidget extends StatelessWidget {
+  const ProgressWithTextWidget({
+    Key key,
+    @required this.text,
+  }) : super(key: key);
 
-  ProgressWithText(this.text);
+  final String text;
+
 
   @override
   Widget build(BuildContext context) {
