@@ -69,7 +69,6 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
         .size
         .width;
     var reports = reportsFuture.reports;
-    print(reports);
     return ListView.builder(
         itemCount: reports.length,
         itemBuilder: (context, i) {
