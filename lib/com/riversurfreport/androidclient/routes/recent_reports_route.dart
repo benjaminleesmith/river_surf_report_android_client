@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/endpoints.dart';
-import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/report.dart';
 import 'package:http/http.dart' as http;
-import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/reports.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/progress_with_text_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/report_widget.dart';
+import 'package:river_surf_report_client/com/riversurfreport/api/models/endpoints.dart';
+import 'package:river_surf_report_client/com/riversurfreport/api/models/report.dart';
+import 'package:river_surf_report_client/com/riversurfreport/api/models/reports.dart';
 
 class RecentReportsRouteState extends State<RecentReportsRoute> {
   String endpointsUrl;

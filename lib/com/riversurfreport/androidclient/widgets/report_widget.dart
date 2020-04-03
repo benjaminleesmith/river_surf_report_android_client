@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/report.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/routes/wave_route.dart';
+import 'package:river_surf_report_client/com/riversurfreport/api/models/report.dart';
 
 class ReportWidget extends StatelessWidget {
   const ReportWidget({

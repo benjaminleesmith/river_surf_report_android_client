@@ -1,5 +1,6 @@
 
-import 'package:river_surf_report_client/com/riversurfreport/androidclient/models/wave_link.dart';
+
+import 'package:river_surf_report_client/com/riversurfreport/api/models/wave_link.dart';
 
 class Report {
   WaveLink wave;
