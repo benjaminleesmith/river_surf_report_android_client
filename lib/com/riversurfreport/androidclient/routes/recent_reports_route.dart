@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:google_fonts/google_fonts.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/progress_with_text_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/report_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/api/models/endpoints.dart';
@@ -14,14 +13,6 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
 
   Future<Endpoints> futureEndpoints;
   Future<Reports> futureReports;
-
-  static Color greenTextColor = const Color.fromRGBO(0, 255, 41, 1.0);
-  TextStyle waveNameStyle = GoogleFonts.vT323(fontSize: 20,
-      height: 2,
-      decoration: TextDecoration.underline,
-      color: greenTextColor);
-  TextStyle flowStyle = GoogleFonts.vT323(
-      fontSize: 20, height: 2, color: greenTextColor);
 
   RecentReportsRouteState(this.endpointsUrl);
 
@@ -77,7 +68,7 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
   }
 
   Widget _buildReport(Report report, var width) {
-    return ReportWidget(report: report, context: context, waveNameStyle: waveNameStyle, flowStyle: flowStyle, width: width);
+    return ReportWidget(report: report, context: context, width: width, waveLink: true);
   }
 
   Future<Reports> fetchReports(String recentReportsUrl) async {
