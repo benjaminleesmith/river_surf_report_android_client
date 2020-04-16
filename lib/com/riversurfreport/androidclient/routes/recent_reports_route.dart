@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/styles/green_terminal_colors.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/progress_with_text_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/report_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/api/models/endpoints.dart';
@@ -18,10 +19,9 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
   String moreReportsUrl;
   GlobalKey globalKey = GlobalKey();
 
-  static Color greenTextColor = const Color.fromRGBO(0, 255, 41, 1.0);
   static TextStyle loadMoreStyle = GoogleFonts.vT323(fontSize: 24,
       height: 3,
-      color: greenTextColor,
+      color: GreenTerminalColors.greenTextColor,
       decoration: TextDecoration.underline);
 
   RecentReportsRouteState(this.endpointsUrl);
@@ -89,7 +89,6 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                       _fetchMoreReports(moreReportsUrl);
                   futureMoreReports.then((moreReports) {
                     setState(() {
-                      print('set state');
                       this.moreReportsUrl = moreReports.moreReportsUrl;
                       this.reports = reports + moreReports.reports;
                     });
