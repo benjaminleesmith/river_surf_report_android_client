@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/progress_with_text_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/report_widget.dart';
@@ -13,6 +14,15 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
 
   Future<Endpoints> futureEndpoints;
   Future<Reports> futureReports;
+  List<Report> reports = [];
+  String moreReportsUrl;
+  GlobalKey globalKey = GlobalKey();
+
+  static Color greenTextColor = const Color.fromRGBO(0, 255, 41, 1.0);
+  static TextStyle loadMoreStyle = GoogleFonts.vT323(fontSize: 24,
+      height: 3,
+      color: greenTextColor,
+      decoration: TextDecoration.underline);
 
   RecentReportsRouteState(this.endpointsUrl);
 
@@ -33,19 +43,26 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                 future: futureEndpoints,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    futureReports = fetchReports(snapshot.data.recentReportsUrl);
-                    return FutureBuilder<Reports>(
-                      future: futureReports,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return _buildReports(snapshot.data);
-                        } else if (snapshot.hasError) {
-                          return Text("${snapshot.error}");
-                        }
+                    if (futureReports == null) {
+                      futureReports =
+                          fetchReports(snapshot.data.recentReportsUrl);
+                      return FutureBuilder<Reports>(
+                          future: futureReports,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              reports = snapshot.data.reports;
+                              moreReportsUrl = snapshot.data.moreReportsUrl;
+                              return _buildReports();
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
 
-                        return ProgressWithTextWidget(text: "fetching recent reports");
-                      }
-                    );
+                            return ProgressWithTextWidget(
+                                text: "fetching recent reports");
+                          });
+                    } else {
+                      return _buildReports();
+                    }
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
@@ -54,37 +71,66 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                 })));
   }
 
-  Widget _buildReports(reportsFuture) {
-    var width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    var reports = reportsFuture.reports;
+  Widget _buildReports() {
+    var width = MediaQuery.of(context).size.width;
     return ListView.builder(
-        itemCount: reports.length,
+        itemCount: reports.length + 1,
         itemBuilder: (context, i) {
-          return _buildReport(reports[i], width);
-        });
+          if (i < reports.length) {
+            return ReportWidget(
+                report: reports[i],
+                context: context,
+                width: width,
+                waveLink: true);
+          } else {
+            return new GestureDetector(
+                onTap: () {
+                  Future<Reports> futureMoreReports =
+                      _fetchMoreReports(moreReportsUrl);
+                  futureMoreReports.then((moreReports) {
+                    setState(() {
+                      print('set state');
+                      this.moreReportsUrl = moreReports.moreReportsUrl;
+                      this.reports = reports + moreReports.reports;
+                    });
+                  });
+                },
+                child: Container(
+                    color: Colors.black,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          Text("Load More Reports", style: loadMoreStyle)
+                        ])
+                ));
+          }
+        },
+        key: globalKey);
   }
 
-  Widget _buildReport(Report report, var width) {
-    return ReportWidget(report: report, context: context, width: width, waveLink: true);
-  }
-
-  Future<Reports> fetchReports(String recentReportsUrl) async {
-    final response =
-    await http.get(recentReportsUrl);
+  Future<Reports> _fetchMoreReports(String moreReportsUrl) async {
+    final response = await http.get(moreReportsUrl);
 
     if (response.statusCode == 200) {
       return Reports.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to load reports');
+      throw Exception('Failed to load more reports');
+    }
+  }
+
+  Future<Reports> fetchReports(String recentReportsUrl) async {
+    final response = await http.get(recentReportsUrl);
+
+    if (response.statusCode == 200) {
+      return Reports.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load recent reports');
     }
   }
 
   Future<Endpoints> fetchEndpoints(String endpointsUrl) async {
-    final response =
-    await http.get(endpointsUrl);
+    final response = await http.get(endpointsUrl);
 
     if (response.statusCode == 200) {
       return Endpoints.fromJson(json.decode(response.body));
@@ -100,5 +146,6 @@ class RecentReportsRoute extends StatefulWidget {
   RecentReportsRoute(this.endpointsUrl);
 
   @override
-  RecentReportsRouteState createState() => RecentReportsRouteState(endpointsUrl);
+  RecentReportsRouteState createState() =>
+      RecentReportsRouteState(endpointsUrl);
 }
