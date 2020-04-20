@@ -96,18 +96,20 @@ class WaveRouteState extends State<WaveRoute> {
           if (i < reports.length) {
             return _buildReport(reports[i], width);
           } else {
-            return new GestureDetector(
-                onTap: () {
-                  Future<Reports> futureMoreReports =
-                      _fetchMoreReports(moreReportsUrl);
-                  futureMoreReports.then((moreReports) {
-                    setState(() {
-                      this.moreReportsUrl = moreReports.moreReportsUrl;
-                      this.reports = reports + moreReports.reports;
+            if(moreReportsUrl != null) {
+              return new GestureDetector(
+                  onTap: () {
+                    Future<Reports> futureMoreReports =
+                    _fetchMoreReports(moreReportsUrl);
+                    futureMoreReports.then((moreReports) {
+                      setState(() {
+                        this.moreReportsUrl = moreReports.moreReportsUrl;
+                        this.reports = reports + moreReports.reports;
+                      });
                     });
-                  });
-                },
-                child: LoadMore());
+                  },
+                  child: LoadMore());
+            }
           }
         },
         key: globalKey);
