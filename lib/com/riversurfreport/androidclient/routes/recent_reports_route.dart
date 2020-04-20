@@ -14,6 +14,7 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
 
   Future<Endpoints> futureEndpoints;
   Future<Reports> futureReports;
+  String recentReportsUrl;
   List<Report> reports = [];
   String moreReportsUrl;
   GlobalKey globalKey = GlobalKey();
@@ -38,8 +39,9 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (futureReports == null) {
+                      recentReportsUrl = snapshot.data.recentReportsUrl;
                       futureReports =
-                          fetchReports(snapshot.data.recentReportsUrl);
+                          fetchReports(recentReportsUrl);
                       return FutureBuilder<Reports>(
                           future: futureReports,
                           builder: (context, snapshot) {
@@ -67,7 +69,7 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
 
   Widget _buildReports() {
     var width = MediaQuery.of(context).size.width;
-    return ListView.builder(
+    return RefreshIndicator(child: ListView.builder(
         itemCount: reports.length + 1,
         itemBuilder: (context, i) {
           if (i < reports.length) {
@@ -91,7 +93,20 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                 child: LoadMore());
           }
         },
-        key: globalKey);
+        key: globalKey),onRefresh: refreshReports);
+  }
+
+  Future<void> refreshReports() async {
+    futureReports =
+        fetchReports(recentReportsUrl);
+    futureReports.then((reports) {
+      setState(() {
+          this.reports = reports.reports;
+          this.moreReportsUrl = reports.moreReportsUrl;
+        }
+      );
+    });
+
   }
 
   Future<Reports> _fetchMoreReports(String moreReportsUrl) async {
