@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:river_surf_report_client/com/riversurfreport/androidclient/styles/green_terminal_colors.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/load_more_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/progress_with_text_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/report_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/api/models/endpoints.dart';
@@ -18,11 +17,6 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
   List<Report> reports = [];
   String moreReportsUrl;
   GlobalKey globalKey = GlobalKey();
-
-  static TextStyle loadMoreStyle = GoogleFonts.vT323(fontSize: 24,
-      height: 3,
-      color: GreenTerminalColors.greenTextColor,
-      decoration: TextDecoration.underline);
 
   RecentReportsRouteState(this.endpointsUrl);
 
@@ -94,15 +88,7 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                     });
                   });
                 },
-                child: Container(
-                    color: Colors.black,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Text("Load More Reports", style: loadMoreStyle)
-                        ])
-                ));
+                child: LoadMore());
           }
         },
         key: globalKey);
