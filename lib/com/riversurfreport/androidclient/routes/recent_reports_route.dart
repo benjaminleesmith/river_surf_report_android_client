@@ -9,6 +9,8 @@ import 'package:river_surf_report_client/com/riversurfreport/api/models/endpoint
 import 'package:river_surf_report_client/com/riversurfreport/api/models/report.dart';
 import 'package:river_surf_report_client/com/riversurfreport/api/models/reports.dart';
 
+import 'browse_route.dart';
+
 class RecentReportsRouteState extends State<RecentReportsRoute> {
   String endpointsUrl;
 
@@ -32,6 +34,35 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
     return Scaffold(
         appBar: AppBar(
           title: Text('River Surf Report'),
+        ),
+        drawer: Drawer(
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Text('River Surf Report'),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+              ),
+              ListTile(
+                title: Text('Recent Reports'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text('Browse Waves'),
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => BrowseRoute())
+                  );
+                },
+              ),
+            ],
+          ),
         ),
         body: Center(
             child: FutureBuilder<Endpoints>(

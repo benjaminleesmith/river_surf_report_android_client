@@ -8,10 +8,12 @@ import 'routes/recent_reports_route.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  static const String apiHomeUrl = 'http://riversurfreport.herokuapp.com/api/home';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: RecentReportsRoute('http://riversurfreport.herokuapp.com/api/home')
+        home: RecentReportsRoute(apiHomeUrl)
     );
   }
 }
