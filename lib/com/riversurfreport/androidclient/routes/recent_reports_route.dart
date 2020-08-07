@@ -19,6 +19,7 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
   String recentReportsUrl;
   List<Report> reports = [];
   String moreReportsUrl;
+  String browseWavesUrl;
   GlobalKey globalKey = GlobalKey();
 
   RecentReportsRouteState(this.endpointsUrl);
@@ -57,7 +58,7 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                 onTap: () {
                   Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => BrowseRoute())
+                      MaterialPageRoute(builder: (context) => BrowseRoute(this.browseWavesUrl))
                   );
                 },
               ),
@@ -71,6 +72,7 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                   if (snapshot.hasData) {
                     if (futureReports == null) {
                       recentReportsUrl = snapshot.data.recentReportsUrl;
+                      browseWavesUrl = snapshot.data.browseWavesUrl;
                       futureReports =
                           fetchReports(recentReportsUrl);
                       return FutureBuilder<Reports>(

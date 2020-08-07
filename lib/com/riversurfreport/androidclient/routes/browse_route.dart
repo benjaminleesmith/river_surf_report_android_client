@@ -4,6 +4,10 @@ import 'package:river_surf_report_client/com/riversurfreport/androidclient/main.
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/routes/recent_reports_route.dart';
 
 class BrowseRouteState extends State<BrowseRoute> {
+  String browseWavesUrl;
+
+  BrowseRouteState(this.browseWavesUrl);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,11 +41,16 @@ class BrowseRouteState extends State<BrowseRoute> {
             ],
           ),
         ),
-        body: Center(child: Text("Browse")));
+        body: Center(child: Text(this.browseWavesUrl)));
   }
 }
 
 class BrowseRoute extends StatefulWidget {
+  String browseWavesUrl;
+
+  BrowseRoute(this.browseWavesUrl);
+
   @override
-  BrowseRouteState createState() => BrowseRouteState();
+  BrowseRouteState createState()
+    => BrowseRouteState(browseWavesUrl);
 }
