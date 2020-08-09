@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/routes/wave_route.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/styles/green_terminal_colors.dart';
 import 'package:river_surf_report_client/com/riversurfreport/api/models/browse_wave.dart';
+import 'package:river_surf_report_client/com/riversurfreport/api/models/wave_link.dart';
 
 class BrowseWaveWidget extends StatelessWidget {
   final BrowseWave wave;
@@ -28,7 +30,15 @@ class BrowseWaveWidget extends StatelessWidget {
         Column(
             children: <Widget>[
               Container(
-                  child: Text(wave.name, style: waveNameStyle)
+                  child: new GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => WaveRoute(WaveLink(name: wave.name, url: wave.url)))
+                        );
+                      },
+                      child: Text(wave.name, style: waveNameStyle)
+                  )
               ),
               Container(
                   color: Colors.black,
