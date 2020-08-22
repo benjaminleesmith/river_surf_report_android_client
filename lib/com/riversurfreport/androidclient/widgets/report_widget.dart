@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/routes/wave_route.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/styles/green_terminal_colors.dart';
 import 'package:river_surf_report_client/com/riversurfreport/api/models/report.dart';
+import 'package:intl/intl.dart';
 
 class ReportWidget extends StatelessWidget {
   const ReportWidget({
@@ -39,7 +40,7 @@ class ReportWidget extends StatelessWidget {
       );
 //      waveNameStyle = defaultWaveNameStyle;
     } else {
-      waveName = Text(report.wave.name, style: waveNameStyle);
+      waveName = Text(DateFormat('MMM d, yyyy').format(report.date), style: waveNameStyle);
     }
 
 
