@@ -38,7 +38,6 @@ class ReportWidget extends StatelessWidget {
       },
           child: Text(report.wave.name, style: waveNameStyle.apply(decoration: TextDecoration.underline))
       );
-//      waveNameStyle = defaultWaveNameStyle;
     } else {
       waveName = Text(DateFormat('MMM d, yyyy').format(report.date), style: waveNameStyle);
     }

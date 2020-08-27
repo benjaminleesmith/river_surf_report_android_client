@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/main.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/routes/recent_reports_route.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/styles/green_terminal_colors.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/browse_wave_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/progress_with_text_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/api/models/waves.dart';
@@ -13,8 +15,15 @@ class BrowseRouteState extends State<BrowseRoute> {
   String browseWavesUrl;
 
   Future<Waves> futureWaves;
+  String searchTerm = '';
 
   BrowseRouteState(this.browseWavesUrl);
+
+  static TextStyle waveNameStyle = GoogleFonts.vT323(fontSize: 20,
+      height: 2,
+      color: GreenTerminalColors.greenTextColor,
+      decoration: TextDecoration.underline
+  );
 
   @override
   void initState() {
@@ -83,9 +92,37 @@ class BrowseRouteState extends State<BrowseRoute> {
   }
 
   Widget _buildWaves(Waves waves) {
-    return ListView.builder(itemCount: waves.waves.length, itemBuilder: (context, i) {
-      return BrowseWaveWidget(wave: waves.waves[i]);
-    });
+    var filteredWaves = waves.waves.where((wave) {
+      var lowerSearchTerm = this.searchTerm.toLowerCase();
+      return wave.name.toLowerCase().contains(lowerSearchTerm) || wave.parentsString.toLowerCase().contains(lowerSearchTerm);
+    }).toList();
+
+    return ListView.builder(
+        itemCount: filteredWaves.length+1,
+        itemBuilder: (context, i) {
+            if(i == 0) {
+              return Container(
+                  color: Colors.black,
+                  padding: new EdgeInsets.symmetric(horizontal: 20.0),
+                  child: TextField(
+                      onChanged: (text) {
+                        setState(() {
+                          this.searchTerm = text;
+                        });
+                      },
+                      cursorColor: GreenTerminalColors.greenTextColor,
+                      style: TextStyle(color: GreenTerminalColors.greenTextColor),
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.search, color: GreenTerminalColors.greenTextColor),
+                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: GreenTerminalColors.greenTextColor, width: 2.0))
+                      )
+                )
+              );
+            } else {
+              return BrowseWaveWidget(wave: filteredWaves[i-1]);
+            }
+        }
+    );
   }
 }
 
