@@ -19,10 +19,10 @@ class Wave {
         reportsUrl: json['reportsUrl'],
         createReportUrl: json['createReportUrl'],
         flowUrl: json['flowUrl'],
-        minFlow: json['minFlow'].toDouble(),
-        maxFlow: json['maxFlow'].toDouble(),
-        flow: json['flow'].toDouble(),
-        flowTimestamp: DateTime.parse(json['flowTimestamp']),
+        minFlow: json['minFlow']?.toDouble() ?? 0.0,
+        maxFlow: json['maxFlow']?.toDouble() ?? 0.0,
+        flow: json['flow']?.toDouble() ?? 0.0,
+        flowTimestamp: json['flowTimestamp'] == null ? null : DateTime.parse(json['flowTimestamp']),
         flowUnitOfMeasurement: json['flowUnitOfMeasurement'],
     );
   }
