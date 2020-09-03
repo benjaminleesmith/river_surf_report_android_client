@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/styles/green_terminal_colors.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/load_more_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/progress_with_text_widget.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/report_widget.dart';
@@ -42,9 +43,19 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                child: Text('River Surf Report'),
+                child: Image(image: AssetImage('logo-green.png')),
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Color.fromRGBO(0, 0, 0, 1.0),
+                  border: Border(
+                    right: BorderSide(
+                      color: GreenTerminalColors.greenTextColor,
+                      width: 2
+                    ),
+                    bottom: BorderSide(
+                      color: GreenTerminalColors.greenTextColor,
+                      width: 2
+                    )
+                  )
                 ),
               ),
               ListTile(
