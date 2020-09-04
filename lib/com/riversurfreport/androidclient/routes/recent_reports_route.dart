@@ -45,27 +45,22 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
               DrawerHeader(
                 child: Image(image: AssetImage('logo-green.png')),
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(0, 0, 0, 1.0),
                   border: Border(
-                    right: BorderSide(
-                      color: GreenTerminalColors.greenTextColor,
-                      width: 2
-                    ),
                     bottom: BorderSide(
                       color: GreenTerminalColors.greenTextColor,
-                      width: 2
+                      width: 6
                     )
                   )
                 ),
               ),
               ListTile(
-                title: Text('Recent Reports'),
+                title: Text('Recent Reports', style: TextStyle(color: GreenTerminalColors.greenTextColor, fontSize: 20)),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                title: Text('Browse Waves'),
+                title: Text('Browse Waves', style: TextStyle(color: GreenTerminalColors.greenTextColor, fontSize: 20)),
                 onTap: () {
                   Navigator.pushReplacement(
                       context,

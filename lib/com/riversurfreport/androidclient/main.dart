@@ -18,6 +18,8 @@ class MyApp extends StatelessWidget {
         home: RecentReportsRoute(apiHomeUrl),
         theme: ThemeData(
           primaryColor: Color.fromRGBO(0, 0, 0, 1.0),
+          canvasColor: Color.fromRGBO(0, 0, 0, 1.0),
+          accentColor: GreenTerminalColors.greenTextColor,
           appBarTheme: AppBarTheme(
             textTheme: TextTheme(
               title: TextStyle(

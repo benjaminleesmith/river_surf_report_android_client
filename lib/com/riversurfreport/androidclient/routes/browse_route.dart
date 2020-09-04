@@ -43,20 +43,25 @@ class BrowseRouteState extends State<BrowseRoute> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                child: Text('River Surf Report'),
+                child: Image(image: AssetImage('logo-green.png')),
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: GreenTerminalColors.greenTextColor,
+                      width: 6
+                    )
+                  )
                 ),
               ),
               ListTile(
-                title: Text('Recent Reports'),
+                title: Text('Recent Reports', style: TextStyle(color: GreenTerminalColors.greenTextColor, fontSize: 20)),
                 onTap: () {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => RecentReportsRoute(MyApp.apiHomeUrl)));
                 },
               ),
               ListTile(
-                title: Text('Browse Waves'),
+                title: Text('Browse Waves', style: TextStyle(color: GreenTerminalColors.greenTextColor, fontSize: 20)),
                 onTap: () {
                   Navigator.pop(context);
                 },
