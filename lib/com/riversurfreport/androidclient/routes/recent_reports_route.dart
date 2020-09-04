@@ -16,11 +16,13 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
   String endpointsUrl;
 
   Future<Endpoints> futureEndpoints;
-  Future<Reports> futureReports;
   String recentReportsUrl;
+
+  Future<Reports> futureReports;
   List<Report> reports = [];
   String moreReportsUrl;
   String browseWavesUrl;
+
   GlobalKey globalKey = GlobalKey();
 
   RecentReportsRouteState(this.endpointsUrl);
@@ -136,16 +138,11 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
   }
 
   Future<void> refreshReports() async {
-    futureReports =
-        fetchReports(recentReportsUrl);
-    futureReports.then((reports) {
-      setState(() {
-          this.reports = reports.reports;
-          this.moreReportsUrl = reports.moreReportsUrl;
-        }
-      );
+    setState(() {
+      this.reports = [];
+      this.futureReports = null;
+      this.moreReportsUrl = null;
     });
-
   }
 
   Future<Reports> _fetchMoreReports(String moreReportsUrl) async {
