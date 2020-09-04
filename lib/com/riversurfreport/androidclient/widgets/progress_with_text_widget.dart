@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/styles/green_terminal_colors.dart';
 
 class ProgressWithTextWidget extends StatelessWidget {
   const ProgressWithTextWidget({
@@ -29,7 +30,7 @@ class ProgressWithTextWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              Center(child: Text(text)),
+              Center(child: Text(text, style: TextStyle(color: GreenTerminalColors.greenTextColor))),
             ],
           ),
         ),

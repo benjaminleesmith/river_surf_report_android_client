@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/main.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/routes/recent_reports_route.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/styles/green_terminal_colors.dart';
@@ -19,7 +18,7 @@ class BrowseRouteState extends State<BrowseRoute> {
 
   BrowseRouteState(this.browseWavesUrl);
 
-  static TextStyle waveNameStyle = GoogleFonts.vT323(fontSize: 20,
+  static TextStyle waveNameStyle = TextStyle(fontSize: 20,
       height: 2,
       color: GreenTerminalColors.greenTextColor,
       decoration: TextDecoration.underline

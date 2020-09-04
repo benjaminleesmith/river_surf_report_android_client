@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/routes/wave_route.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/styles/green_terminal_colors.dart';
 import 'package:river_surf_report_client/com/riversurfreport/api/models/report.dart';
@@ -19,10 +18,10 @@ class ReportWidget extends StatelessWidget {
   final BuildContext context;
   final double width;
   final bool waveLink;
-  static TextStyle waveNameStyle = GoogleFonts.vT323(fontSize: 20,
+  static TextStyle waveNameStyle = TextStyle(fontSize: 20,
       height: 2,
       color: GreenTerminalColors.greenTextColor);
-  static TextStyle flowStyle = GoogleFonts.vT323(
+  static TextStyle flowStyle = TextStyle(
       fontSize: 20, height: 2, color: GreenTerminalColors.greenTextColor);
 
   @override

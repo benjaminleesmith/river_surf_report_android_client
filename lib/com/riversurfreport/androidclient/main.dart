@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
 //        debugShowCheckedModeBanner: false,
         home: RecentReportsRoute(apiHomeUrl),
         theme: ThemeData(
+          fontFamily: 'VT323',
           primaryColor: Color.fromRGBO(0, 0, 0, 1.0),
           canvasColor: Color.fromRGBO(0, 0, 0, 1.0),
           accentColor: GreenTerminalColors.greenTextColor,
