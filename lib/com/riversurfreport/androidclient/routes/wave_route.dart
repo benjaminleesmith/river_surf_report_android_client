@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:river_surf_report_client/com/riversurfreport/androidclient/styles/green_terminal_colors.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/load_more_widget.dart';
 import 'dart:convert';
 
@@ -90,7 +91,9 @@ class WaveRouteState extends State<WaveRoute> {
 
   Widget _buildReports() {
     var width = MediaQuery.of(context).size.width;
-    return ListView.builder(
+    print(reports.length);
+    if(reports.length > 0) {
+      return ListView.builder(
         itemCount: reports.length + 1,
         itemBuilder: (context, i) {
           if (i < reports.length) {
@@ -98,21 +101,25 @@ class WaveRouteState extends State<WaveRoute> {
           } else {
             if(moreReportsUrl != null) {
               return new GestureDetector(
-                  onTap: () {
-                    Future<Reports> futureMoreReports =
-                    _fetchMoreReports(moreReportsUrl);
-                    futureMoreReports.then((moreReports) {
-                      setState(() {
-                        this.moreReportsUrl = moreReports.moreReportsUrl;
-                        this.reports = reports + moreReports.reports;
-                      });
+                onTap: () {
+                  Future<Reports> futureMoreReports =
+                  _fetchMoreReports(moreReportsUrl);
+                  futureMoreReports.then((moreReports) {
+                    setState(() {
+                      this.moreReportsUrl = moreReports.moreReportsUrl;
+                      this.reports = reports + moreReports.reports;
                     });
-                  },
-                  child: LoadMore());
+                  });
+                },
+                child: LoadMore());
             }
           }
         },
         key: globalKey);
+    } else {
+      return Text("No Reports", style: TextStyle(color: GreenTerminalColors.greenTextColor));
+    }
+
   }
 
   Future<Reports> _fetchMoreReports(String moreReportsUrl) async {
