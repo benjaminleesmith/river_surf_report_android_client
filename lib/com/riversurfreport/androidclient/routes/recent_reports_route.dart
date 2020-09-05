@@ -45,7 +45,7 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                child: Image(image: AssetImage('logo-green.png')),
+                child: Image(image: AssetImage('logo-colors.png')),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(

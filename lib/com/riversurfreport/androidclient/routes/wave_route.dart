@@ -91,7 +91,6 @@ class WaveRouteState extends State<WaveRoute> {
 
   Widget _buildReports() {
     var width = MediaQuery.of(context).size.width;
-    print(reports.length);
     if(reports.length > 0) {
       return ListView.builder(
         itemCount: reports.length + 1,
