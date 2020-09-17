@@ -1,16 +1,7 @@
-# river_surf_report_client
+flutter build appbundle -t lib/com/riversurfreport/androidclient/main.dart
 
-River Surf Report Android Client
+java -jar ~/Downloads/bundletool-all-1.2.0.jar build-apks --bundle=build/app/outputs/bundle/release/app-release.aab --output=riversurfreport.apks
 
-## Getting Started
+export ANDROID_HOME=/Users/bsmith/Library/Android/sdk/
+java -jar ~/Downloads/bundletool-all-1.2.0.jar install-apks --apks=riversurfreport.apks
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
