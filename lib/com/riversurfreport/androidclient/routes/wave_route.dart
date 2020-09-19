@@ -13,35 +13,53 @@ import 'package:river_surf_report_client/com/riversurfreport/api/models/wave.dar
 import 'package:river_surf_report_client/com/riversurfreport/api/models/wave_link.dart';
 
 class WaveRouteState extends State<WaveRoute> {
-  WaveLink wave;
+  WaveLink waveLink;
 
   Future<Wave> futureWave;
   Future<Reports> futureReports;
+  Wave wave;
+  RangeValues flowRangeValues = null;
   List<Report> reports = [];
   String moreReportsUrl;
   GlobalKey globalKey = GlobalKey();
+  bool showFilters = false;
 
   WaveRouteState(WaveLink wave) {
-    this.wave = wave;
+    this.waveLink = wave;
   }
 
   @override
   void initState() {
     super.initState();
-    futureWave = fetchWave(wave.url);
+    futureWave = fetchWave(waveLink.url);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(wave.name),
+          title: Text(waveLink.name),
+          actions: <Widget>[
+            IconButton(
+               icon: Icon(Icons.filter_list, color: GreenTerminalColors.greenTextColor),
+               tooltip: 'Show Filters',
+               onPressed: () {
+                 setState(() {
+                   this.showFilters = !this.showFilters;
+                 });
+               },
+            ),
+          ]
         ),
         body: Center(
             child: FutureBuilder<Wave>(
                 future: futureWave,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    wave = snapshot.data;
+                    if(flowRangeValues == null) {
+                      flowRangeValues = RangeValues(wave.minFlow, wave.maxFlow);
+                    }
                     if (futureReports == null) {
                       futureReports = fetchReports(snapshot.data.reportsUrl);
                       return FutureBuilder<Reports>(
@@ -91,34 +109,69 @@ class WaveRouteState extends State<WaveRoute> {
 
   Widget _buildReports() {
     var width = MediaQuery.of(context).size.width;
+
     if(reports.length > 0) {
-      return ListView.builder(
-        itemCount: reports.length + 1,
-        itemBuilder: (context, i) {
-          if (i < reports.length) {
-            return _buildReport(reports[i], width);
-          } else {
-            if(moreReportsUrl != null) {
-              return new GestureDetector(
-                onTap: () {
-                  Future<Reports> futureMoreReports =
-                  _fetchMoreReports(moreReportsUrl);
-                  futureMoreReports.then((moreReports) {
+      return Column(
+        children: <Widget>[
+          Visibility(
+            visible: this.showFilters,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(0, 33, 0, 0),
+              child: SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  valueIndicatorTextStyle: TextStyle(color: Colors.black, fontSize: 10)
+                ),
+                child: RangeSlider(
+                  values: flowRangeValues,
+                  min: wave.minFlow,
+                  max: wave.maxFlow,
+                  inactiveColor: GreenTerminalColors.disabledGreen,
+                  activeColor: GreenTerminalColors.greenTextColor,
+                  divisions: 100,
+                  labels: RangeLabels(
+                    flowRangeValues.start.round().toString(),
+                    flowRangeValues.end.round().toString(),
+                  ),
+                  onChanged: (RangeValues values) {
                     setState(() {
-                      this.moreReportsUrl = moreReports.moreReportsUrl;
-                      this.reports = reports + moreReports.reports;
+                      flowRangeValues = values;
                     });
-                  });
-                },
-                child: LoadMore());
-            }
-          }
-        },
-        key: globalKey);
+                  },
+                )
+              )
+            )
+          ),
+          Flexible(
+            child: ListView.builder(
+              itemCount: reports.length + 1,
+              itemBuilder: (context, i) {
+                if (i < reports.length) {
+                  return _buildReport(reports[i], width);
+                } else {
+                  if(moreReportsUrl != null) {
+                    return new GestureDetector(
+                      onTap: () {
+                        Future<Reports> futureMoreReports =
+                        _fetchMoreReports(moreReportsUrl);
+                        futureMoreReports.then((moreReports) {
+                          setState(() {
+                            this.moreReportsUrl = moreReports.moreReportsUrl;
+                            this.reports = reports + moreReports.reports;
+                          });
+                        });
+                      },
+                      child: LoadMore());
+                  }
+                }
+              },
+              key: globalKey
+            )
+          )
+        ]
+      );
     } else {
       return Text("No Reports", style: TextStyle(color: GreenTerminalColors.greenTextColor));
     }
-
   }
 
   Future<Reports> _fetchMoreReports(String moreReportsUrl) async {
