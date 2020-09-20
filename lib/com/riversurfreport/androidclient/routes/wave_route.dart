@@ -61,7 +61,7 @@ class WaveRouteState extends State<WaveRoute> {
                       flowRangeValues = RangeValues(wave.minFlow, wave.maxFlow);
                     }
                     if (futureReports == null) {
-                      futureReports = fetchReports(snapshot.data.reportsUrl);
+                      futureReports = fetchReports(snapshot.data.reportsUrl + "?min_flow=" + flowRangeValues.start.round().toString() + "&max_flow=" + flowRangeValues.end.round().toString());
                       return FutureBuilder<Reports>(
                           future: futureReports,
                           builder: (context, snapshot) {
@@ -132,6 +132,12 @@ class WaveRouteState extends State<WaveRoute> {
                     flowRangeValues.start.round().toString(),
                     flowRangeValues.end.round().toString(),
                   ),
+                  onChangeEnd: (RangeValues values) {
+                    setState(() {
+                      futureReports = null;
+                      reports = [];
+                    });
+                  },
                   onChanged: (RangeValues values) {
                     setState(() {
                       flowRangeValues = values;
