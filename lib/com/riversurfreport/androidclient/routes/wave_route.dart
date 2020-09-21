@@ -113,40 +113,7 @@ class WaveRouteState extends State<WaveRoute> {
     if(reports.length > 0) {
       return Column(
         children: <Widget>[
-          Visibility(
-            visible: this.showFilters,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(0, 33, 0, 0),
-              child: SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  valueIndicatorTextStyle: TextStyle(color: Colors.black, fontSize: 10)
-                ),
-                child: RangeSlider(
-                  values: flowRangeValues,
-                  min: wave.minFlow,
-                  max: wave.maxFlow,
-                  inactiveColor: GreenTerminalColors.disabledGreen,
-                  activeColor: GreenTerminalColors.greenTextColor,
-                  divisions: 100,
-                  labels: RangeLabels(
-                    flowRangeValues.start.round().toString(),
-                    flowRangeValues.end.round().toString(),
-                  ),
-                  onChangeEnd: (RangeValues values) {
-                    setState(() {
-                      futureReports = null;
-                      reports = [];
-                    });
-                  },
-                  onChanged: (RangeValues values) {
-                    setState(() {
-                      flowRangeValues = values;
-                    });
-                  },
-                )
-              )
-            )
-          ),
+          _filterWidget(),
           Flexible(
             child: ListView.builder(
               itemCount: reports.length + 1,
@@ -176,8 +143,56 @@ class WaveRouteState extends State<WaveRoute> {
         ]
       );
     } else {
-      return Text("No Reports", style: TextStyle(color: GreenTerminalColors.greenTextColor));
+      return Column(
+        children: <Widget>[
+          _filterWidget(),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[Text("No Reports", style: TextStyle(color: GreenTerminalColors.greenTextColor))]
+            )
+          )
+        ]
+      );
     }
+  }
+
+  Visibility _filterWidget() {
+    return Visibility(
+          visible: this.showFilters,
+          child: Container(
+            padding: EdgeInsets.fromLTRB(0, 33, 0, 0),
+            child: SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                valueIndicatorTextStyle: TextStyle(color: Colors.black, fontSize: 10)
+              ),
+              child: RangeSlider(
+                values: flowRangeValues,
+                min: wave.minFlow,
+                max: wave.maxFlow,
+                inactiveColor: GreenTerminalColors.disabledGreen,
+                activeColor: GreenTerminalColors.greenTextColor,
+                divisions: 100,
+                labels: RangeLabels(
+                  flowRangeValues.start.round().toString(),
+                  flowRangeValues.end.round().toString(),
+                ),
+                onChangeEnd: (RangeValues values) {
+                  setState(() {
+                    futureReports = null;
+                    reports = [];
+                  });
+                },
+                onChanged: (RangeValues values) {
+                  setState(() {
+                    flowRangeValues = values;
+                  });
+                },
+              )
+            )
+          )
+        );
   }
 
   Future<Reports> _fetchMoreReports(String moreReportsUrl) async {
