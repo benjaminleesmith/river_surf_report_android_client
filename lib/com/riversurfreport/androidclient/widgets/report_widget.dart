@@ -73,12 +73,22 @@ class _ReportWidgetState extends State<ReportWidget> {
     );
 
     if(showDetails) {
+      List<Widget> detailsStack = <Widget>[];
+
+      detailsStack.add(Text("Stars: "+("\u2605" * widget.report.stars), style: TextStyle(color: GreenTerminalColors.greenTextColor, fontSize: 16)));
+      detailsStack.add(Text("Notes: "+widget.report.notes, style: TextStyle(color: GreenTerminalColors.greenTextColor)));
+      if(widget.waveLink) {
+        detailsStack.add(Text("Date: "+DateFormat('MMM d, yyyy').format(widget.report.date), style: TextStyle(color: GreenTerminalColors.greenTextColor)));
+      }
+
       imageStack.add(
         Container(
           color: Colors.black.withOpacity(0.8),
           width: widget.width,
-          height: 100,
-          child: Text("foo")
+          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+          child: Column(
+            children: detailsStack
+          )
         )
       );
     }
