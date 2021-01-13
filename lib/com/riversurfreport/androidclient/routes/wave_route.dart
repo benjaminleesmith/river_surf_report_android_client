@@ -12,6 +12,8 @@ import 'package:river_surf_report_client/com/riversurfreport/api/models/reports.
 import 'package:river_surf_report_client/com/riversurfreport/api/models/wave.dart';
 import 'package:river_surf_report_client/com/riversurfreport/api/models/wave_link.dart';
 
+import 'add_report_route.dart';
+
 class WaveRouteState extends State<WaveRoute> {
   WaveLink waveLink;
 
@@ -40,6 +42,16 @@ class WaveRouteState extends State<WaveRoute> {
         appBar: AppBar(
           title: Text(waveLink.name),
           actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.add, color: GreenTerminalColors.greenTextColor),
+              tooltip: 'Add Report',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddReportRoute(wave.createReportUrl))
+                );
+              },
+            ),
             IconButton(
                icon: Icon(Icons.filter_list, color: GreenTerminalColors.greenTextColor),
                tooltip: 'Show Filters',
