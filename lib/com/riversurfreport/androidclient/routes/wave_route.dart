@@ -16,6 +16,7 @@ import 'add_report_route.dart';
 
 class WaveRouteState extends State<WaveRoute> {
   WaveLink waveLink;
+  String signInUrl;
 
   Future<Wave> futureWave;
   Future<Reports> futureReports;
@@ -26,8 +27,9 @@ class WaveRouteState extends State<WaveRoute> {
   GlobalKey globalKey = GlobalKey();
   bool showFilters = false;
 
-  WaveRouteState(WaveLink wave) {
+  WaveRouteState(WaveLink wave, String signInUrl) {
     this.waveLink = wave;
+    this.signInUrl = signInUrl;
   }
 
   @override
@@ -48,7 +50,7 @@ class WaveRouteState extends State<WaveRoute> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddReportRoute(wave.createReportUrl))
+                  MaterialPageRoute(builder: (context) => AddReportRoute(wave.createReportUrl, this.signInUrl))
                 );
               },
             ),
@@ -225,11 +227,13 @@ class WaveRouteState extends State<WaveRoute> {
 
 class WaveRoute extends StatefulWidget {
   WaveLink wave;
+  String signInUrl;
 
-  WaveRoute(WaveLink wave) {
+  WaveRoute(WaveLink wave, String signInUrl) {
     this.wave = wave;
+    this.signInUrl = signInUrl;
   }
 
   @override
-  WaveRouteState createState() => WaveRouteState(this.wave);
+  WaveRouteState createState() => WaveRouteState(this.wave, this.signInUrl);
 }

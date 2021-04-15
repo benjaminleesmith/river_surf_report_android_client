@@ -22,6 +22,7 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
   List<Report> reports = [];
   String moreReportsUrl;
   String browseWavesUrl;
+  String signInUrl;
 
   GlobalKey globalKey = GlobalKey();
 
@@ -41,7 +42,6 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
         ),
         drawer: Drawer(
           child: ListView(
-            // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
@@ -66,7 +66,7 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                 onTap: () {
                   Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => BrowseRoute(this.browseWavesUrl))
+                      MaterialPageRoute(builder: (context) => BrowseRoute(this.browseWavesUrl, this.signInUrl))
                   );
                 },
               ),
@@ -81,6 +81,7 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                     if (futureReports == null) {
                       recentReportsUrl = snapshot.data.recentReportsUrl;
                       browseWavesUrl = snapshot.data.browseWavesUrl;
+                      signInUrl = snapshot.data.signInUrl;
                       futureReports =
                           fetchReports(recentReportsUrl);
                       return FutureBuilder<Reports>(
@@ -118,7 +119,9 @@ class RecentReportsRouteState extends State<RecentReportsRoute> {
                 report: reports[i],
                 context: context,
                 width: width,
-                waveLink: true);
+                waveLink: true,
+                signInUrl: signInUrl
+            );
           } else {
             return new GestureDetector(
                 onTap: () {

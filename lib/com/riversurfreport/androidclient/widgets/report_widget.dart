@@ -13,13 +13,15 @@ class ReportWidget extends StatefulWidget {
     @required this.report,
     @required this.context,
     @required this.width,
-    @required this.waveLink
+    @required this.waveLink,
+    this.signInUrl
   }) : super(key: key);
 
   final Report report;
   final BuildContext context;
   final double width;
   final bool waveLink;
+  final String signInUrl;
   static TextStyle waveNameStyle = TextStyle(fontSize: 20,
       height: 2,
       color: GreenTerminalColors.greenTextColor);
@@ -27,11 +29,16 @@ class ReportWidget extends StatefulWidget {
       fontSize: 20, height: 2, color: GreenTerminalColors.greenTextColor);
 
   @override
-  _ReportWidgetState createState() => _ReportWidgetState();
+  _ReportWidgetState createState() => _ReportWidgetState(this.signInUrl);
 }
 
 class _ReportWidgetState extends State<ReportWidget> {
   bool showDetails = false;
+  String signInUrl;
+
+  _ReportWidgetState(String signInUrl) {
+    this.signInUrl = signInUrl;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +49,7 @@ class _ReportWidgetState extends State<ReportWidget> {
         onTap: () {
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => WaveRoute(widget.report.wave))
+              MaterialPageRoute(builder: (context) => WaveRoute(widget.report.wave, this.signInUrl))
           );
         },
         child: Text(widget.report.wave.name, style: ReportWidget.waveNameStyle.apply(decoration: TextDecoration.underline))

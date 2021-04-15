@@ -12,11 +12,12 @@ import 'package:http/http.dart' as http;
 
 class BrowseRouteState extends State<BrowseRoute> {
   String browseWavesUrl;
+  String signInUrl;
 
   Future<Waves> futureWaves;
   String searchTerm = '';
 
-  BrowseRouteState(this.browseWavesUrl);
+  BrowseRouteState(this.browseWavesUrl, this.signInUrl);
 
   static TextStyle waveNameStyle = TextStyle(fontSize: 20,
       height: 2,
@@ -123,7 +124,7 @@ class BrowseRouteState extends State<BrowseRoute> {
                 )
               );
             } else {
-              return BrowseWaveWidget(wave: filteredWaves[i-1]);
+              return BrowseWaveWidget(wave: filteredWaves[i-1], signInUrl: this.signInUrl);
             }
         }
     );
@@ -132,10 +133,11 @@ class BrowseRouteState extends State<BrowseRoute> {
 
 class BrowseRoute extends StatefulWidget {
   String browseWavesUrl;
+  String signInUrl;
 
-  BrowseRoute(this.browseWavesUrl);
+  BrowseRoute(this.browseWavesUrl, this.signInUrl);
 
   @override
   BrowseRouteState createState()
-    => BrowseRouteState(browseWavesUrl);
+    => BrowseRouteState(this.browseWavesUrl, this.signInUrl);
 }

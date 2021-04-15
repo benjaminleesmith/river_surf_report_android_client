@@ -7,50 +7,45 @@ import 'package:river_surf_report_client/com/riversurfreport/api/models/wave_lin
 
 class BrowseWaveWidget extends StatelessWidget {
   final BrowseWave wave;
+  final String signInUrl;
 
-  const BrowseWaveWidget({@required this.wave});
+  const BrowseWaveWidget({@required this.wave, @required this.signInUrl});
 
-  static TextStyle waveNameStyle = TextStyle(fontSize: 20,
+  static TextStyle waveNameStyle = TextStyle(
+      fontSize: 20,
       height: 2,
       color: GreenTerminalColors.greenTextColor,
-      decoration: TextDecoration.underline
-  );
+      decoration: TextDecoration.underline);
 
-  static TextStyle waveParentStyle = TextStyle(fontSize: 14,
-      height: 2,
-      color: GreenTerminalColors.greenTextColor,
+  static TextStyle waveParentStyle = TextStyle(
+    fontSize: 14,
+    height: 2,
+    color: GreenTerminalColors.greenTextColor,
   );
 
   @override
   Widget build(BuildContext context) {
     return Container(
         color: Colors.black,
-      child:
-        Column(
-            children: <Widget>[
-              Container(
-                  child: new GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => WaveRoute(WaveLink(name: wave.name, url: wave.url)))
-                        );
-                      },
-                      child: Text(wave.name, style: waveNameStyle)
-                  )
-              ),
-              Container(
-                  color: Colors.black,
-                  child: Text(wave.parentsString, style: waveParentStyle)
-              ),
-              Container(
-                color: GreenTerminalColors.greenTextColor,
-                height: 2,
-                margin: new EdgeInsets.fromLTRB(0, 10, 0, 0)
-              )
-
-            ]
-        )
-    );
+        child: Column(children: <Widget>[
+          Container(
+              child: new GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WaveRoute(
+                                WaveLink(name: wave.name, url: wave.url),
+                                this.signInUrl)));
+                  },
+                  child: Text(wave.name, style: waveNameStyle))),
+          Container(
+              color: Colors.black,
+              child: Text(wave.parentsString, style: waveParentStyle)),
+          Container(
+              color: GreenTerminalColors.greenTextColor,
+              height: 2,
+              margin: new EdgeInsets.fromLTRB(0, 10, 0, 0))
+        ]));
   }
 }
