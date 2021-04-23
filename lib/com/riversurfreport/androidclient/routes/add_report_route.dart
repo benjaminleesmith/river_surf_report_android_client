@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/styles/green_terminal_colors.dart';
 import 'package:river_surf_report_client/com/riversurfreport/androidclient/widgets/custom_dialog.dart';
@@ -31,11 +33,13 @@ class AddReportRouteState extends State<AddReportRoute> {
   bool uploadingImage = false;
   PickedFile imageFile;
 
-  String uploadedImageUrl = null;
-  int cfs;
+  String uploadedImageUrl;
+  String cfs;
   int stars = 0;
   DateTime reportDateTime = DateTime.now();
-  String notes;
+  String notes = "";
+
+  bool savingReport = false;
 
   AddReportRouteState(String createReportUrl, String signInUrl) {
     this.createReportUrl = createReportUrl;
@@ -78,8 +82,10 @@ class AddReportRouteState extends State<AddReportRoute> {
         return _choosePhoto(context);
       } else if(this.uploadingImage) {
         return ProgressWithTextWidget(text: "uploading photo");
-      } else if(!this.uploadingImage && uploadedImageUrl != null) {
+      } else if(!this.uploadingImage && uploadedImageUrl != null && !this.savingReport) {
         return _setReportMetadata(context);
+      } else {
+        return ProgressWithTextWidget(text: "Saving Report!");
       }
     }
   }
@@ -103,10 +109,9 @@ class AddReportRouteState extends State<AddReportRoute> {
               ),
               onChanged: (text) {
                 setState(() {
-                  this.cfs = int.parse(text);
+                  this.cfs = text;
                 });
               },
-              autofocus: true,
               cursorColor: GreenTerminalColors.greenTextColor,
               style: TextStyle(color: GreenTerminalColors.greenTextColor, fontSize: 18),
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -226,12 +231,22 @@ class AddReportRouteState extends State<AddReportRoute> {
   }
 
   _onSaveReport() async {
+    setState(() {
+      this.savingReport = true;
+    });
     var uri = Uri.parse(this.createReportUrl);
-    final response = await http.post(
-      uri,
-      headers: {"Authorization": "Bearer $token"},
-      body: {"image_url": this.uploadedImageUrl, "cfs": this.cfs.toString()}
-      );
+    var body = {
+      "image_url": this.uploadedImageUrl,
+      "stars": this.stars.toString(),
+      "date_time": DateFormat('yyyy-MM-ddT12:00:00').format(this.reportDateTime)+DateTime.now().timeZoneOffset.toString(),
+      "notes": this.notes
+    };
+    if(this.cfs != null && !this.cfs.isEmpty) {
+     body["cfs"] = this.cfs;
+    }
+    final response = await http.post(uri, headers: {
+      "Authorization": "Bearer $token"
+    }, body: body);
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);

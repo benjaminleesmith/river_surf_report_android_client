@@ -47,11 +47,16 @@ class WaveRouteState extends State<WaveRoute> {
             IconButton(
               icon: Icon(Icons.add, color: GreenTerminalColors.greenTextColor),
               tooltip: 'Add Report',
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AddReportRoute(wave.createReportUrl, this.signInUrl))
                 );
+                setState(() {
+                  futureReports = null;
+                  flowRangeValues = null;
+                });
+
               },
             ),
             IconButton(
@@ -75,7 +80,11 @@ class WaveRouteState extends State<WaveRoute> {
                       flowRangeValues = RangeValues(wave.minFlow, wave.maxFlow);
                     }
                     if (futureReports == null) {
-                      futureReports = fetchReports(snapshot.data.reportsUrl + "?min_flow=" + flowRangeValues.start.round().toString() + "&max_flow=" + flowRangeValues.end.round().toString());
+                      String reportsUrl = snapshot.data.reportsUrl;
+                      if(wave.minFlow != flowRangeValues.start || wave.maxFlow != flowRangeValues.end) {
+                        reportsUrl = reportsUrl + "?min_flow=" + flowRangeValues.start.round().toString() + "&max_flow=" + flowRangeValues.end.round().toString();
+                      }
+                      futureReports = fetchReports(reportsUrl);
                       return FutureBuilder<Reports>(
                           future: futureReports,
                           builder: (context, snapshot) {

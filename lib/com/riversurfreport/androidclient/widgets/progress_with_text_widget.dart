@@ -14,8 +14,8 @@ class ProgressWithTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        SizedBox(height: 200.0),
         SizedBox(
           height: 200.0,
           child: Stack(

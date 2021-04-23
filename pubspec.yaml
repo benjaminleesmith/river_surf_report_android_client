@@ -28,6 +28,7 @@ dependencies:
   path: ^1.6.4
   flutter_session: ^0.1.1
   amazon_cognito_identity_dart_2: 0.1.25+4
+  flutter_native_timezone: ^1.0.10
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
